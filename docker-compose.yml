@@ -1,0 +1,42 @@
+# docker-compose.yml (Context Hataları Düzeltilmiş Hali)
+
+services:
+  frankenphp:
+    build:
+      context: .
+      dockerfile: frankenphp/Dockerfile
+    ports:
+      - "8000:80"
+    volumes:
+      - ./app:/app
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "8001:80"
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - php-fpm
+
+  apache:
+    build:
+      context: .
+      dockerfile: apache/Dockerfile
+    ports:
+      - "8002:80"
+    volumes:
+      - ./app:/usr/local/apache2/htdocs
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    image: php:8.3-fpm-alpine
+    volumes:
+      - ./app:/var/www/html
+      - ./app:/usr/local/apache2/htdocs
+
+  benchmark-tool:
+    image: alpine/bombardier

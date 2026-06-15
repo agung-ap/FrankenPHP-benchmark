@@ -1,0 +1,10 @@
+{
+	order php_server before file_server
+	log {
+		output file /dev/null
+	}
+}
+
+http://:80 {
+	php_server
+}

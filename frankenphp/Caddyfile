@@ -1,0 +1,7 @@
+{
+	order php_server before file_server
+}
+
+:80 {
+	php_server
+}
